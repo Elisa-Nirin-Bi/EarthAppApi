@@ -97,7 +97,7 @@ const job = cron.schedule('* * * * * *', function jobYouNeedToExecute() {
 });
 
 app.get('/', (req, res, next) => {
-  Position.find()
+  Position.find({ date: '2022-01-09' })
     .then((positions) => {
       console.log(positions);
       res.json(positions);
