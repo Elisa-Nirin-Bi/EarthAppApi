@@ -11,16 +11,16 @@ const schema = new mongoose.Schema({
   time: {
     type: String
   },
-  long: {
+  longitude: {
     type: String
   },
-  lat: {
+  latitude: {
     type: String
   },
   depth: {
     type: String
   },
-  mag: {
+  magnitude: {
     type: String
   },
   direction: {

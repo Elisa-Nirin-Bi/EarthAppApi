@@ -1,4 +1,4 @@
-const PORT = process.env.PORT || 8000;
+const PORT = 8000;
 const axios = require('axios');
 const express = require('express');
 const cheerio = require('cheerio');
@@ -10,12 +10,15 @@ dotenv.config();
 const MONGODB_URI = process.env.MONGODB_URI;
 const Position = require('./Models/position.js');
 const cron = require('node-cron');
-mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 const job = cron.schedule('* * * * * *', function jobYouNeedToExecute() {
   // Do whatever you want in here. Send email, Make  database backup or download data.
   console.log('hi');
-  const url = 'https://www.emsc-csem.org/Earthquake/';
+  const url = 'https://www.emsc-csem.org/Earthquake/?view=230';
   try {
     axios(url).then((response) => {
       const html = response.data;
@@ -29,7 +32,7 @@ const job = cron.schedule('* * * * * *', function jobYouNeedToExecute() {
         var scrapedLatitude = $($(e).find('td')[4]).text();
         var scrapedLatDirection = $($(e).find('td')[5]).text().trim();
         var scrapedLocation = $($(e).find('.tb_region')).text().trim();
-        var scrapedDepth = $($(e).find('td')[8]).text();
+        var scrapedDepth = $($(e).find('td')[8]).text().concat('KM');
         //let d = $($(e).find('td > i')).text();
         let scrapedDateAndTime = $($(e).find('td > b > a')).text();
         let scrapedDate = scrapedDateAndTime.substring(0, 10);
@@ -60,20 +63,20 @@ const job = cron.schedule('* * * * * *', function jobYouNeedToExecute() {
           const isDuplicate = await Position.findOne({
             date: scrapedDate,
             time: scrapedTime,
-            long: scrapedFullLong,
-            lat: scrapedFullLat,
+            longitude: scrapedFullLong,
+            latitudes: scrapedFullLat,
             depth: scrapedDepth,
-            mag: scrapedMagnitude,
+            magnitude: scrapedMagnitude,
             location: scrapedLocation
           });
           if (!isDuplicate) {
             return Position.create({
               date: scrapedDate,
               time: scrapedTime,
-              long: scrapedFullLong,
-              lat: scrapedFullLat,
+              longitude: scrapedFullLong,
+              latitude: scrapedFullLat,
               depth: scrapedDepth,
-              mag: scrapedMagnitude,
+              magnitude: scrapedMagnitude,
               location: scrapedLocation
             });
           } else {
@@ -97,7 +100,7 @@ const job = cron.schedule('* * * * * *', function jobYouNeedToExecute() {
 });
 
 app.get('/', (req, res, next) => {
-  Position.find({ date: '2022-01-09' })
+  Position.find({ date: '2022-01-10' })
     .then((positions) => {
       console.log(positions);
       res.json(positions);
