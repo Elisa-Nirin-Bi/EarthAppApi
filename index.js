@@ -18,7 +18,7 @@ mongoose.connect(MONGODB_URI, {
 const job = cron.schedule('* * * * * *', function jobYouNeedToExecute() {
   // Do whatever you want in here. Send email, Make  database backup or download data.
   console.log('hi');
-  const url = 'https://www.emsc-csem.org/Earthquake/';
+  const url = '';
   try {
     axios(url).then((response) => {
       const html = response.data;
