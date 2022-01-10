@@ -100,7 +100,11 @@ const job = cron.schedule('* * * * * *', function jobYouNeedToExecute() {
 });
 
 app.get('/', (req, res, next) => {
-  Position.find()
+  Position.find(
+    Position.find({
+      date: { $gte: '2022-01-08', $lte: '2022-01-10' }
+    })
+  )
     .then((positions) => {
       console.log(positions);
       res.json(positions);
