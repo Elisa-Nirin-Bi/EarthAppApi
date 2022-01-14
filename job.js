@@ -40,11 +40,11 @@ axios(url).then((response) => {
 
     all.push(
       scrapedMagnitude,
-      scrapedFullLong,
+      scrapedLongitude,
       scrapedDepth,
       scrapedDate,
       scrapedTime,
-      scrapedFullLat,
+      scrapedLatitude,
       scrapedLocation
     );
 
@@ -53,15 +53,15 @@ axios(url).then((response) => {
       scrapedDepth,
       scrapedDate,
       scrapedTime,
-      scrapedFullLat,
-      scrapedFullLong,
+      scrapedLatitude,
+      scrapedLongitude,
       scrapedLocation
     ) => {
       const isDuplicate = await Position.findOne({
         date: scrapedDate,
         time: scrapedTime,
-        longitude: scrapedFullLong,
-        latitudes: scrapedFullLat,
+        longitude: scrapedLongitude,
+        latitudes: scrapedLatitude,
         depth: scrapedDepth,
         magnitude: scrapedMagnitude,
         location: scrapedLocation
@@ -70,8 +70,8 @@ axios(url).then((response) => {
         return Position.create({
           date: scrapedDate,
           time: scrapedTime,
-          longitude: scrapedFullLong,
-          latitude: scrapedFullLat,
+          longitude: scrapedLongitude,
+          latitude: scrapedLatitude,
           depth: scrapedDepth,
           magnitude: scrapedMagnitude,
           location: scrapedLocation
@@ -85,8 +85,8 @@ axios(url).then((response) => {
       scrapedDepth,
       scrapedDate,
       scrapedTime,
-      scrapedFullLat,
-      scrapedFullLong,
+      scrapedLatitude,
+      scrapedLongitude,
       scrapedLocation
     );
   });
