@@ -21,12 +21,10 @@ axios(url).then((response) => {
   const html = response.data;
   const $ = cheerio.load(html);
 
-  let all = [];
-
   $('#tbody > tr ').each(function (i, e) {
-    var scrapedLongitude = $($(e).find('td' > '.tabev1')[6]).text();
+    var scrapedLongitude = $($(e).find('td')[6]).text();
     var scrapedLongDirection = $($(e).find('td')[7]).text().trim();
-    var scrapedLatitude = $($(e).find('td' > '.tabev1')[4]).text();
+    var scrapedLatitude = $($(e).find('td')[4]).text();
     var scrapedLatDirection = $($(e).find('td')[5]).text().trim();
     var scrapedLocation = $($(e).find('.tb_region')).text().trim();
     var scrapedDepth = $($(e).find('td')[8]).text().concat('KM');
@@ -38,30 +36,20 @@ axios(url).then((response) => {
     let scrapedFullLong = scrapedLongitude + scrapedLongDirection;
     let scrapedFullLat = scrapedLatitude + scrapedLatDirection;
 
-    all.push(
-      scrapedMagnitude,
-      scrapedLongitude,
-      scrapedDepth,
-      scrapedDate,
-      scrapedTime,
-      scrapedLatitude,
-      scrapedLocation
-    );
-
     const test = async (
       scrapedMagnitude,
       scrapedDepth,
       scrapedDate,
       scrapedTime,
-      scrapedLatitude,
-      scrapedLongitude,
+      scrapedFullLat,
+      scrapedFullLong,
       scrapedLocation
     ) => {
       const isDuplicate = await Position.findOne({
         date: scrapedDate,
         time: scrapedTime,
-        longitude: scrapedLongitude,
-        latitudes: scrapedLatitude,
+        longitude: scrapedFullLong,
+        latitudes: scrapedFullLat,
         depth: scrapedDepth,
         magnitude: scrapedMagnitude,
         location: scrapedLocation
@@ -70,8 +58,8 @@ axios(url).then((response) => {
         return Position.create({
           date: scrapedDate,
           time: scrapedTime,
-          longitude: scrapedLongitude,
-          latitude: scrapedLatitude,
+          longitude: scrapedFullLong,
+          latitude: scrapedFullLat,
           depth: scrapedDepth,
           magnitude: scrapedMagnitude,
           location: scrapedLocation
@@ -85,8 +73,8 @@ axios(url).then((response) => {
       scrapedDepth,
       scrapedDate,
       scrapedTime,
-      scrapedLatitude,
-      scrapedLongitude,
+      scrapedFullLat,
+      scrapedFullLong,
       scrapedLocation
     );
   });
