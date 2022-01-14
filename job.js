@@ -24,9 +24,9 @@ axios(url).then((response) => {
   let all = [];
 
   $('#tbody > tr ').each(function (i, e) {
-    var scrapedLongitude = $($(e).find('td')[6]).text();
+    var scrapedLongitude = $($(e).find('td' > '.tabev1')[6]).text();
     var scrapedLongDirection = $($(e).find('td')[7]).text().trim();
-    var scrapedLatitude = $($(e).find('td')[4]).text();
+    var scrapedLatitude = $($(e).find('td' > '.tabev1')[4]).text();
     var scrapedLatDirection = $($(e).find('td')[5]).text().trim();
     var scrapedLocation = $($(e).find('.tb_region')).text().trim();
     var scrapedDepth = $($(e).find('td')[8]).text().concat('KM');
