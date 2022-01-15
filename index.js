@@ -15,7 +15,7 @@ mongoose.connect(MONGODB_URI, {
 });
 
 app.get('/', (req, res, next) => {
-  Position.find(Position.find())
+  Position.find()
     .then((positions) => {
       console.log(positions);
       res.json(positions);
@@ -102,12 +102,12 @@ app.get('/hourly-results', (req, res, next) => {
   var timeNow =
     time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
   console.log(previousHour, timeNow);
-  Position.find(
-    Position.find({
-      date: today,
-      time: { $gte: previousHour, $lte: timeNow }
-    })
-  )
+
+  Position.find({
+    date: today,
+    time: { $gte: previousHour, $lte: timeNow }
+  })
+
     .then((positions) => {
       res.json(positions);
     })
@@ -117,11 +117,10 @@ app.get('/hourly-results', (req, res, next) => {
 });
 
 app.get('/significant', (req, res, next) => {
-  Position.find(
-    Position.find({
-      magnitude: { $gte: 5.0 }
-    })
-  )
+  Position.find({
+    magnitude: { $gte: 5.0 }
+  })
+
     .then((positions) => {
       res.json(positions);
     })
