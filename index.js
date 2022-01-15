@@ -77,11 +77,10 @@ app.get('/week-results', (req, res, next) => {
   weekDate.setDate(weekDate.getDate() - additionOfDays); //
   const lastWeek = weekDate.toISOString().split('T')[0];
 
-  Position.find(
-    Position.find({
-      date: { $gte: lastWeek, $lte: today }
-    })
-  )
+  Position.find({
+    date: { $gte: lastWeek, $lte: today }
+  })
+
     .then((positions) => {
       res.render(positions);
     })
