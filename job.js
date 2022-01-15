@@ -13,6 +13,8 @@ mongoose.connect(MONGODB_URI, {
   useUnifiedTopology: true
 });
 
+// Do whatever you want in here. Send email, Make  database backup or download data.
+
 const url = 'https://www.emsc-csem.org/Earthquake/';
 
 axios(url).then((response) => {

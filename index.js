@@ -8,7 +8,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 const MONGODB_URI = process.env.MONGODB_URI;
 const Position = require('./Models/position.js');
-const { findAll } = require('domutils');
 
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
@@ -124,7 +123,7 @@ app.get('/significant', (req, res, next) => {
     })
   )
     .then((positions) => {
-      console.log(positions);
+      res.json(positions);
     })
     .catch((error) => {
       next(error);
