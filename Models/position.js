@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema(
   {
+    _id: { type: mongoose.Schema.ObjectId, select: false },
     date: {
       type: String,
       trim: true,
@@ -29,24 +30,15 @@ const schema = new mongoose.Schema(
     },
     location: {
       type: String
-    }
+    },
+    __v: { type: Number, select: false }
   },
-
   {
     timestamps: {
       createdAt: 'creationDate'
     }
   }
 );
-
-Position.set('toObject', {
-  transform: function (doc, ret) {
-    ret.id = ret._id;
-    delete ret._id;
-    delete ret.__v;
-  }
-});
-
 const Position = mongoose.model('Position', schema);
 
 module.exports = Position;
