@@ -15,7 +15,7 @@ mongoose.connect(MONGODB_URI, {
 
 // Do whatever you want in here. Send email, Make  database backup or download data.
 console.log('hi');
-const url = 'https://www.emsc-csem.org/Earthquake/?view=5';
+const url = 'https://www.emsc-csem.org/Earthquake/?view=1';
 
 axios(url).then((response) => {
   const html = response.data;
@@ -27,7 +27,7 @@ axios(url).then((response) => {
     var scrapedLatitude = $($(e).find('td')[4]).text();
     var scrapedLatDirection = $($(e).find('td')[5]).text().trim();
     var scrapedLocation = $($(e).find('.tb_region')).text().trim();
-    var scrapedDepth = $($(e).find('td')[8]).text().concat('KM');
+    var scrapedDepth = $($(e).find('td')[8]).text().concat(' KM');
     //let d = $($(e).find('td > i')).text();
     let scrapedDateAndTime = $($(e).find('td > b > a')).text();
     let scrapedDate = scrapedDateAndTime.substring(0, 10);
