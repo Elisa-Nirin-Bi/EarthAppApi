@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema(
   {
-    _id: { type: mongoose.Schema.ObjectId },
+    _id: { type: mongoose.Schema.ObjectId, select: false },
     date: {
       type: String,
       trim: true,
@@ -31,11 +31,12 @@ const schema = new mongoose.Schema(
     location: {
       type: String
     },
-    __v: { type: Number }
+    __v: { type: Number, select: false }
   },
   {
     timestamps: {
-      createdAt: 'creationDate'
+      createdAt: 'creationDate',
+      select: false
     }
   }
 );
