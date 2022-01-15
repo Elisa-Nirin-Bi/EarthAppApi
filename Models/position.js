@@ -31,7 +31,6 @@ const schema = new mongoose.Schema(
       type: String
     }
   },
-  { versionKey: false },
 
   {
     timestamps: {
@@ -39,6 +38,14 @@ const schema = new mongoose.Schema(
     }
   }
 );
+
+Position.set('toObject', {
+  transform: function (doc, ret) {
+    ret.id = ret._id;
+    delete ret._id;
+    delete ret.__v;
+  }
+});
 
 const Position = mongoose.model('Position', schema);
 
