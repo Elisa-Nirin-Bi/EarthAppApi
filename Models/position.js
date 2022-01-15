@@ -35,7 +35,8 @@ const schema = new mongoose.Schema(
   },
   {
     timestamps: {
-      createdAt: 'creationDate'
+      createdAt: 'creationDate',
+      select: false
     }
   }
 );
