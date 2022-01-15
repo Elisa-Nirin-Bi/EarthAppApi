@@ -47,27 +47,6 @@ app.get('/monthly-results', (req, res, next) => {
     });
 });
 
-app.get('/monthly-results', (req, res, next) => {
-  let yourDate = new Date();
-  let today = yourDate.toISOString().split('T')[0];
-
-  const date = new Date();
-  const additionOfMonths = 1;
-  date.setMonth(date.getMonth() - additionOfMonths);
-  const lastMonth = date.toISOString().split('T')[0];
-
-  Position.find({
-    date: { $gte: lastMonth, $lte: today }
-  })
-
-    .then((positions) => {
-      res.render(positions);
-    })
-    .catch((error) => {
-      next(error);
-    });
-});
-
 app.get('/week-results', (req, res, next) => {
   let yourDate = new Date();
   let today = yourDate.toISOString().split('T')[0];
@@ -82,7 +61,7 @@ app.get('/week-results', (req, res, next) => {
   })
 
     .then((positions) => {
-      res.render(positions);
+      res.json(positions);
     })
     .catch((error) => {
       next(error);
