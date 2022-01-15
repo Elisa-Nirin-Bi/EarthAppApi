@@ -15,7 +15,7 @@ mongoose.connect(MONGODB_URI, {
 
 // Do whatever you want in here. Send email, Make  database backup or download data.
 console.log('hi');
-const url = 'https://www.emsc-csem.org/Earthquake/';
+const url = 'https://www.emsc-csem.org/Earthquake/?view=5';
 
 axios(url).then((response) => {
   const html = response.data;

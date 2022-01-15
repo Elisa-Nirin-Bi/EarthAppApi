@@ -31,6 +31,8 @@ const schema = new mongoose.Schema(
       type: String
     }
   },
+  { versionKey: false },
+
   {
     timestamps: {
       createdAt: 'creationDate'

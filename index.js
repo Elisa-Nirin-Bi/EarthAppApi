@@ -8,6 +8,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const MONGODB_URI = process.env.MONGODB_URI;
 const Position = require('./Models/position.js');
+const { findAll } = require('domutils');
 
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
@@ -56,14 +57,12 @@ app.get('/monthly-results', (req, res, next) => {
   date.setMonth(date.getMonth() - additionOfMonths);
   const lastMonth = date.toISOString().split('T')[0];
 
-  Position.find(
-    Position.find({
-      date: { $gte: lastMonth, $lte: today }
-    })
-  )
+  Position.find({
+    date: { $gte: lastMonth, $lte: today }
+  })
+
     .then((positions) => {
-      console.log(positions);
-      res.json(positions);
+      res.render(positions);
     })
     .catch((error) => {
       next(error);
@@ -85,8 +84,7 @@ app.get('/week-results', (req, res, next) => {
     })
   )
     .then((positions) => {
-      console.log(positions);
-      res.json(positions);
+      res.render(positions);
     })
     .catch((error) => {
       next(error);
@@ -112,7 +110,6 @@ app.get('/hourly-results', (req, res, next) => {
     })
   )
     .then((positions) => {
-      console.log(positions);
       res.json(positions);
     })
     .catch((error) => {
@@ -128,7 +125,6 @@ app.get('/significant', (req, res, next) => {
   )
     .then((positions) => {
       console.log(positions);
-      res.json(positions);
     })
     .catch((error) => {
       next(error);
