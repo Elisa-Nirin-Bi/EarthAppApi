@@ -15,7 +15,7 @@ mongoose.connect(MONGODB_URI, {
 });
 
 app.get('/', (req, res, next) => {
-  Position.find({ _id: 0 })
+  Position.find({}, { projection: { _id: 0 } })
     .then((positions) => {
       res.json(positions);
     })
@@ -24,7 +24,7 @@ app.get('/', (req, res, next) => {
     });
 });
 
-app.get('/monthly-results', (req, res, next) => {
+app.get('/last-month-results', (req, res, next) => {
   let yourDate = new Date();
   let today = yourDate.toISOString().split('T')[0];
 
@@ -32,11 +32,14 @@ app.get('/monthly-results', (req, res, next) => {
   const additionOfMonths = 1;
   date.setMonth(date.getMonth() - additionOfMonths);
   const lastMonth = date.toISOString().split('T')[0];
+
   Position.find(
-    Position.find({
+    {
       date: { $gte: lastMonth, $lte: today }
-    })
+    },
+    { _id: 0 }
   )
+
     .then((positions) => {
       console.log(positions);
       res.json(positions);
@@ -46,7 +49,7 @@ app.get('/monthly-results', (req, res, next) => {
     });
 });
 
-app.get('/week-results', (req, res, next) => {
+app.get('/last-week-results', (req, res, next) => {
   let yourDate = new Date();
   let today = yourDate.toISOString().split('T')[0];
 
@@ -55,9 +58,12 @@ app.get('/week-results', (req, res, next) => {
   weekDate.setDate(weekDate.getDate() - additionOfDays); //
   const lastWeek = weekDate.toISOString().split('T')[0];
 
-  Position.find({
-    date: { $gte: lastWeek, $lte: today }
-  })
+  Position.find(
+    {
+      date: { $gte: lastWeek, $lte: today }
+    },
+    { _id: 0 }
+  )
 
     .then((positions) => {
       res.json(positions);
@@ -105,6 +111,8 @@ app.get('/significant', (req, res, next) => {
   )
 
     .then((positions) => {
+      delete positions._id;
+
       res.json(positions);
     })
     .catch((error) => {
