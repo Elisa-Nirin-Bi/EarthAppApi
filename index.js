@@ -14,7 +14,7 @@ mongoose.connect(MONGODB_URI, {
   useUnifiedTopology: true
 });
 
-app.get('/', (req, res, next) => {
+app.get('/month', (req, res, next) => {
   const date = new Date();
   const addOneMonth = 1;
   date.setMonth(date.getMonth() - addOneMonth);
