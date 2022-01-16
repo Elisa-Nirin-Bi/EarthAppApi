@@ -1,7 +1,5 @@
 const axios = require('axios');
-
 const cheerio = require('cheerio');
-
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
@@ -13,9 +11,7 @@ mongoose.connect(MONGODB_URI, {
   useUnifiedTopology: true
 });
 
-// Do whatever you want in here. Send email, Make  database backup or download data.
-console.log('hi');
-const url = 'https://www.emsc-csem.org/Earthquake/?view=1';
+const url = 'https://www.emsc-csem.org/Earthquake/';
 
 axios(url).then((response) => {
   const html = response.data;

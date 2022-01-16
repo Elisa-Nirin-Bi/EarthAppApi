@@ -17,7 +17,6 @@ mongoose.connect(MONGODB_URI, {
 app.get('/', (req, res, next) => {
   Position.find()
     .then((positions) => {
-      console.log(positions);
       res.json(positions);
     })
     .catch((error) => {

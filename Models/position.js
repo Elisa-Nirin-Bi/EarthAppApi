@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema(
   {
-    _id: { type: mongoose.Schema.ObjectId, select: false },
     date: {
       type: String,
       trim: true,
