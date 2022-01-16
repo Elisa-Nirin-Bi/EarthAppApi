@@ -11,7 +11,7 @@ mongoose.connect(MONGODB_URI, {
   useUnifiedTopology: true
 });
 
-const url = 'https://www.emsc-csem.org/Earthquake/';
+const url = process.env.URL;
 
 axios(url).then((response) => {
   const html = response.data;
@@ -24,14 +24,15 @@ axios(url).then((response) => {
     var scrapedLatDirection = $($(e).find('td')[5]).text().trim();
     var scrapedLocation = $($(e).find('.tb_region')).text().trim();
     var scrapedDepth = $($(e).find('td')[8]).text().concat('KM');
-    //let d = $($(e).find('td > i')).text();
     let scrapedDateAndTime = $($(e).find('td > b > a')).text();
     let scrapedDate = scrapedDateAndTime.substring(0, 10);
     let scrapedTime = scrapedDateAndTime.substring(13, 21);
     let scrapedMagnitude = $($(e).find('td')[10]).text();
     let scrapedFullLong = scrapedLongitude + scrapedLongDirection;
     let scrapedFullLat = scrapedLatitude + scrapedLatDirection;
+    let scrapedMagnitudeType = $($(e).find('td')[9]).text();
 
+    console.log(scrapedMagnitudeType);
     const test = async (
       scrapedMagnitude,
       scrapedDepth,
@@ -39,7 +40,8 @@ axios(url).then((response) => {
       scrapedTime,
       scrapedFullLat,
       scrapedFullLong,
-      scrapedLocation
+      scrapedLocation,
+      scrapedMagnitudeType
     ) => {
       const isDuplicate = await Position.findOne({
         date: scrapedDate,
@@ -48,6 +50,7 @@ axios(url).then((response) => {
         latitudes: scrapedFullLat,
         depth: scrapedDepth,
         magnitude: scrapedMagnitude,
+        magnitudeType: scrapedMagnitudeType,
         location: scrapedLocation
       });
       if (!isDuplicate) {
@@ -58,6 +61,7 @@ axios(url).then((response) => {
           latitude: scrapedFullLat,
           depth: scrapedDepth,
           magnitude: scrapedMagnitude,
+          magnitudeType: scrapedMagnitudeType,
           location: scrapedLocation
         });
       } else {
@@ -71,7 +75,8 @@ axios(url).then((response) => {
       scrapedTime,
       scrapedFullLat,
       scrapedFullLong,
-      scrapedLocation
+      scrapedLocation,
+      scrapedMagnitudeType
     );
   });
 });

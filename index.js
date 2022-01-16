@@ -1,13 +1,13 @@
 const PORT = process.env.PORT || 8000;
-
 const express = require('express');
-
 const app = express();
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
 const MONGODB_URI = process.env.MONGODB_URI;
 const Position = require('./Models/position.js');
+let yourDate = new Date();
+let today = yourDate.toISOString().split('T')[0];
 
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
@@ -15,22 +15,9 @@ mongoose.connect(MONGODB_URI, {
 });
 
 app.get('/', (req, res, next) => {
-  Position.find({}, { projection: { _id: 0 } })
-    .then((positions) => {
-      res.json(positions);
-    })
-    .catch((error) => {
-      next(error);
-    });
-});
-
-app.get('/last-month-results', (req, res, next) => {
-  let yourDate = new Date();
-  let today = yourDate.toISOString().split('T')[0];
-
   const date = new Date();
-  const additionOfMonths = 1;
-  date.setMonth(date.getMonth() - additionOfMonths);
+  const addOneMonth = 1;
+  date.setMonth(date.getMonth() - addOneMonth);
   const lastMonth = date.toISOString().split('T')[0];
 
   Position.find(
@@ -49,10 +36,28 @@ app.get('/last-month-results', (req, res, next) => {
     });
 });
 
-app.get('/last-week-results', (req, res, next) => {
-  let yourDate = new Date();
-  let today = yourDate.toISOString().split('T')[0];
+app.get('/three-months', (req, res, next) => {
+  const date = new Date();
+  const addThreeMonths = 3;
+  date.setMonth(date.getMonth() - addThreeMonths);
+  const lastThreeMonth = date.toISOString().split('T')[0];
 
+  Position.find(
+    {
+      date: { $gte: lastThreeMonth, $lte: today }
+    },
+    { _id: 0 }
+  )
+
+    .then((positions) => {
+      console.log(positions);
+      res.json(positions);
+    })
+    .catch((error) => {
+      next(error);
+    });
+});
+app.get('/week', (req, res, next) => {
   const weekDate = new Date();
   const additionOfDays = 6;
   weekDate.setDate(weekDate.getDate() - additionOfDays); //
@@ -73,9 +78,7 @@ app.get('/last-week-results', (req, res, next) => {
     });
 });
 
-app.get('/hourly-results', (req, res, next) => {
-  let yourDate = new Date();
-  let today = yourDate.toISOString().split('T')[0];
+app.get('/hour', (req, res, next) => {
   const date = new Date();
   const additionOfHours = 1;
   date.setHours(date.getHours() - additionOfHours); // For subtract use minus (-)
@@ -103,8 +106,13 @@ app.get('/hourly-results', (req, res, next) => {
 });
 
 app.get('/significant', (req, res, next) => {
+  const date = new Date();
+  const addThreeMonths = 3;
+  date.setMonth(date.getMonth() - addThreeMonths);
+  const lastThreeMonth = date.toISOString().split('T')[0];
   Position.find(
     {
+      date: { $gte: lastThreeMonth, $lte: today },
       magnitude: { $gte: 5.0 }
     },
     { _id: 0 }

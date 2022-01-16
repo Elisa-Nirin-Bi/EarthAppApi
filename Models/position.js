@@ -23,6 +23,9 @@ const schema = new mongoose.Schema({
   magnitude: {
     type: String
   },
+  magnitudeType: {
+    type: String
+  },
   direction: {
     type: String
   },
